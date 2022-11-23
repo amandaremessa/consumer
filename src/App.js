@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import api from './services/api';
 import './App.css';
 
+import logo from './assets/logo.png';
+
 function App() {
   const [email, setEmail] = useState('');
 
@@ -18,7 +20,7 @@ function App() {
   return (
     <div className='container'>
       <div className='content'>
-        <p>Insira seu e-mail</p>
+        <p>Aplicação criada para realização de <strong> Testes de Contrato com Pact</strong></p>
         <form onSubmit={ handleSubmit }>
           <label htmlFor='email'>E-MAIL*</label>
           <input 
