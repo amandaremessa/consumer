@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "test": "jest __tests__/contract/consumer --runInBand --setupFiles ./__tests__/helpers/pactSetup.js --setupTestFrameworkScriptFile=./__tests__/helpers/pactTestWrapper.js",
+    "test": "jest __tests__/contract --runInBand --setupFiles ./__tests__/helpers/pactSetup.js --setupTestFrameworkScriptFile=./__tests__/helpers/pactTestWrapper.js",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
   },
