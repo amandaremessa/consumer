@@ -15,6 +15,15 @@ function App() {
     console.log(response);
   }
 
+  async function postEmail(email){
+    const response = await api.post('/users', {
+      email: this.email
+    });
+    
+    console.log(response);
+    return response;
+  }
+
   return (
     <div className='container'>
       <div className='content'>
