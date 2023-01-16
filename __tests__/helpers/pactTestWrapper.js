@@ -1,4 +1,6 @@
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000
+const provider = require("../helpers/pactSetup");
+
+jest.setTimeout(30000)
 
 beforeAll(()=> provider.setup());
 

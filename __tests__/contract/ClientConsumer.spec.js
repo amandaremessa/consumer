@@ -1,5 +1,19 @@
-const { Matchers } = require("@pact-foundation/pact");
-const { App } = require("../../src/App");
+//const { Matchers } = require("@pact-foundation/pact");
+import App from "../../src/App"
+const path = require("path");
+const pactV3 = require("@pact-foundation/pact");
+const PactV3 = pactV3.PactV3
+
+const provider = new PactV3({
+    port: 8081,
+    log: path.resolve(process.cwd(), "__tests__/contract/logs", "logs-pact.log" ),
+    dir: path.resolve(process.cwd(), "__tests__/contract/pacts"),
+    spec: 2,
+    logLevel: 'INFO',
+    pactfileWriteMode: "overwrite",
+    consumer: "consumer",
+    provider: "provider"
+});
 
 describe("Client Service", () =>{
 
@@ -35,7 +49,8 @@ describe("Client Service", () =>{
 
         test("returns correct body, header and status code", async() =>{
             let email = "amandaeflavinha@remessaonline.com.br"
-            const response =  await App.postEmail(email);
+            const response =  await (email);
+            // eslint-disable-next-line jest/valid-expect
             expect(response.headers['content-type'].toBe("application/json; charset=utf-8"));
             expect(response.data).toEqual(POST_EXPECTED_BODY);
             expect(response.status).toEqual(200);
