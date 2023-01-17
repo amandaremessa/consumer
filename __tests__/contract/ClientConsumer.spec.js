@@ -1,23 +1,14 @@
-//const { Matchers } = require("@pact-foundation/pact");
-import App from "../../src/App"
-const path = require("path");
-const pactV3 = require("@pact-foundation/pact");
-const PactV3 = pactV3.PactV3
+"use strict"
 
-const provider = new PactV3({
-    port: 8081,
-    log: path.resolve(process.cwd(), "__tests__/contract/logs", "logs-pact.log" ),
-    dir: path.resolve(process.cwd(), "__tests__/contract/pacts"),
-    spec: 2,
-    logLevel: 'INFO',
-    pactfileWriteMode: "overwrite",
-    consumer: "consumer",
-    provider: "provider"
-});
+import { api } from '../../src/services/api';
+const provider = require("../helpers/pactSetup");
+
+
+const { MatchersV3 } = require("@pact-foundation/pact")
 
 describe("Client Service", () =>{
 
-    const POST_EXPECTED_BODY = [{
+    const expectedBody = [{
         "email": "foo",
         "id": "bar"
     }];
@@ -26,36 +17,36 @@ describe("Client Service", () =>{
 
     describe("POST Email", () =>{
         beforeEach(()=>{
-            const interaction = {
-                state: "I create an email on database",
-                uponReceiving: "a request for post email",
-                withRequest: {
-                    method: "POST",
-                    path: "/users",
-                    headers: {
-                        Accept: "application/json, text/plain, */*"
-                    },
-                },
-                willRespondWith: {
-                    status: 200,
-                    headers: {
-                        "Content-Type": "application/json; charset=utf-8",
-                    },
-                    body: POST_EXPECTED_BODY,
-                },
-            }
-            return provider.addInteraction(interaction);
+            mockProvider
+            .uponReceiving('a request to create client with firstname and lastname')
+            .withRequest({
+              method: "POST",
+              path: "/users",
+              headers: {
+                "Content-Type": "application/json;charset=utf-8"
+              },
+              body: requestBody,
+            })
+            .willRespondWith({
+              status: 200,
+              body: MatchersV3.like(expectedBody),
+            });
+          })
+      
+    });
+
+        test("returns correct body and status code", async() =>{
+
+
+            return mockProvider.executeTest(async () => {
+                const response = await api.post('/users', {
+                    email: "amandaeflavinha@remessaonline.com.br"
+                  });
+                  expect(response.data).to.deep.equal(expectedBody);
+                  expect(response.status).to.equal(200);
+
+            });
+
         });
 
-        test("returns correct body, header and status code", async() =>{
-            let email = "amandaeflavinha@remessaonline.com.br"
-            const response =  await (email);
-            // eslint-disable-next-line jest/valid-expect
-            expect(response.headers['content-type'].toBe("application/json; charset=utf-8"));
-            expect(response.data).toEqual(POST_EXPECTED_BODY);
-            expect(response.status).toEqual(200);
-        });
-
-    })
-
-})
+});
