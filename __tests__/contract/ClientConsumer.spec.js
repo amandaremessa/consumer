@@ -1,52 +1,50 @@
 "use strict"
 
-import { api } from '../../src/services/api';
-const provider = require("../helpers/pactSetup");
+const  api = require('../../src/services/api').default;
+const { provider } = require("../helpers/pactSetup");
 
 
 const { MatchersV3 } = require("@pact-foundation/pact")
 
 describe("Client Service", () =>{
 
-    const expectedBody = [{
-        "email": "foo",
-        "id": "bar"
-    }];
-
-    afterEach(() => provider.verify());
+    const expectedBody = {
+        "email": MatchersV3.string("foo"),
+    };
 
     describe("POST Email", () =>{
         beforeEach(()=>{
-            mockProvider
+          provider
             .uponReceiving('a request to create client with firstname and lastname')
             .withRequest({
               method: "POST",
               path: "/users",
               headers: {
-                "Content-Type": "application/json;charset=utf-8"
+                "Content-Type": "application/json"
               },
-              body: requestBody,
+              body: expectedBody,
             })
             .willRespondWith({
               status: 200,
               body: MatchersV3.like(expectedBody),
             });
           })
-      
-    });
 
-        test("returns correct body and status code", async() =>{
+          test("returns correct body and status code", async() =>{
 
 
-            return mockProvider.executeTest(async () => {
+            return provider.executeTest(async () => {
                 const response = await api.post('/users', {
                     email: "amandaeflavinha@remessaonline.com.br"
                   });
-                  expect(response.data).to.deep.equal(expectedBody);
-                  expect(response.status).to.equal(200);
+                  expect(response.data).toEqual(MatchersV3.extractPayload(expectedBody));
+                  expect(response.status).toEqual(200);
 
             });
 
         });
+    });
+
+
 
 });
