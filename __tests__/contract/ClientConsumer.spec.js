@@ -13,7 +13,7 @@ describe("Client Service", () =>{
     };
 
     describe("POST Email", () =>{
-        beforeEach(()=>{
+        beforeEach(() =>
           provider
             .uponReceiving('a request to create client with firstname and lastname')
             .withRequest({
@@ -27,8 +27,8 @@ describe("Client Service", () =>{
             .willRespondWith({
               status: 200,
               body: MatchersV3.like(expectedBody),
-            });
-          })
+            })
+          )
 
           test("returns correct body and status code", async() =>{
 
