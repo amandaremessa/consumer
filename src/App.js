@@ -8,7 +8,7 @@ function App() {
   async function handleSubmit(event){
     event.preventDefault();
 
-    const response = await api.post('/users', {
+    const response = await api().post('/users', {
       email
     });
 
@@ -16,7 +16,7 @@ function App() {
   }
 
   async function postEmail(email){
-    const response = await api.post('/users', {
+    const response = await api().post('/users', {
       email: this.email
     });
     

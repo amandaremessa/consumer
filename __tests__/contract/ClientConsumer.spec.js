@@ -1,52 +1,45 @@
-"use strict"
-
-import { api } from '../../src/services/api';
-const provider = require("../helpers/pactSetup");
+import api from '../../src/services/api';
+import { provider } from '../helpers/pactSetup';
 
 
-const { MatchersV3 } = require("@pact-foundation/pact")
+import { MatchersV3 } from "@pact-foundation/pact";
 
-describe("Client Service", () =>{
+describe("Client Service", () => {
 
-    const expectedBody = [{
-        "email": "foo",
-        "id": "bar"
-    }];
+  const expectedBody = {
+    "email": MatchersV3.string("foo"),
+  };
 
-    afterEach(() => provider.verify());
+  describe("POST Email", () => {
+    beforeEach(() =>
+      provider
+        .uponReceiving('a request to create client with firstname and lastname')
+        .withRequest({
+          method: "POST",
+          path: "/users",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: expectedBody,
+        })
+        .willRespondWith({
+          status: 200,
+          body: MatchersV3.like(expectedBody),
+        })
+    )
 
-    describe("POST Email", () =>{
-        beforeEach(()=>{
-            mockProvider
-            .uponReceiving('a request to create client with firstname and lastname')
-            .withRequest({
-              method: "POST",
-              path: "/users",
-              headers: {
-                "Content-Type": "application/json;charset=utf-8"
-              },
-              body: requestBody,
-            })
-            .willRespondWith({
-              status: 200,
-              body: MatchersV3.like(expectedBody),
-            });
-          })
-      
-    });
-
-        test("returns correct body and status code", async() =>{
-
-
-            return mockProvider.executeTest(async () => {
-                const response = await api.post('/users', {
-                    email: "amandaeflavinha@remessaonline.com.br"
-                  });
-                  expect(response.data).to.deep.equal(expectedBody);
-                  expect(response.status).to.equal(200);
-
-            });
-
+    test("returns correct body and status code", async () => {
+      return provider.executeTest(async (mockServer) => {
+        const response = await api(mockServer.url).post('/users', {
+          email: "amandaeflavinha@remessaonline.com.br"
         });
+        expect(response.data).toEqual(MatchersV3.extractPayload(expectedBody));
+        expect(response.status).toEqual(200);
+      });
+
+    });
+  });
+
+
 
 });

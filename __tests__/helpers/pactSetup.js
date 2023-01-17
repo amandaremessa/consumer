@@ -1,7 +1,7 @@
-const { PactV3 } = require("@pact-foundation/pact");
+import { PactV3 } from "@pact-foundation/pact";
 
-global.mockProvider = new PactV3({
-  port: 8081,
+export const provider = new PactV3({
+  port: 3333,
   logLevel: 'INFO',
   consumer: 'frontend',
   provider: 'clients-service',
