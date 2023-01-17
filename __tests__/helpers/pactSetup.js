@@ -1,6 +1,6 @@
 import { PactV3 } from "@pact-foundation/pact";
 
-module.exports.provider = new PactV3({
+export const provider = new PactV3({
   port: 3333,
   logLevel: 'INFO',
   consumer: 'frontend',
