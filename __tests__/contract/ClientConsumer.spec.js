@@ -2,7 +2,7 @@ import api from '../../src/services/api';
 import { provider } from '../helpers/pactSetup';
 
 
-const { MatchersV3 } = require("@pact-foundation/pact")
+import { MatchersV3 } from "@pact-foundation/pact";
 
 describe("Client Service", () => {
 
