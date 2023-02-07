@@ -1,7 +1,6 @@
 import {createUser } from '../../src/services/api';
 import { provider } from '../helpers/pactSetup';
 
-
 import { MatchersV3 } from "@pact-foundation/pact";
 
 describe("Client Service", () => {
