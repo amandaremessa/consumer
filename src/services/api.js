@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const api = (baseURL = 'http://localhost:3333') => axios.create({
+export const createUser = (baseURL = 'http://localhost:3333', email) => axios.create({
     baseURL
+}).post("/users", {
+    email
 });
-
-export default api;

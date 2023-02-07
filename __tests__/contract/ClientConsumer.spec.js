@@ -1,4 +1,4 @@
-import api from '../../src/services/api';
+import {createUser } from '../../src/services/api';
 import { provider } from '../helpers/pactSetup';
 
 
@@ -30,9 +30,7 @@ describe("Client Service", () => {
 
     test("returns correct body and status code", async () => {
       return provider.executeTest(async (mockServer) => {
-        const response = await api(mockServer.url).post('/users', {
-          email: "amandaeflavinha@remessaonline.com.br"
-        });
+        const response = await createUser(mockServer.url, "steczflalari@remessaonline.com.br");
         expect(response.data).toEqual(MatchersV3.extractPayload(expectedBody));
         expect(response.status).toEqual(200);
       });
